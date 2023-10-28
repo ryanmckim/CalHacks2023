@@ -2,11 +2,13 @@ from dotenv import load_dotenv
 import openai
 import os
 
+load_dotenv()
+
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 def openai_prompt(prompt):
     conversation = [
-        {"role": "user", "content": "Give me the mood, genre, feeling of this description: \"" + prompt + "\""}
+        {"role": "user", "content": "Give me the mood, genre, and feeling of this description: \"" + prompt + "\""}
     ]
 
     response = openai.ChatCompletion.create(

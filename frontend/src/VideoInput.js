@@ -1,4 +1,5 @@
 import React from "react";
+import axios from 'axios';
 
 export default function VideoInput(props) {
   const { width, height } = props;
@@ -9,10 +10,18 @@ export default function VideoInput(props) {
 
   const audio = true;
 
-  const handleFileChange = (event) => {
+  const handleUpload = async (event) => {
     const file = event.target.files[0];
-    const url = URL.createObjectURL(file);
-    setSource(url);
+    const formData = new FormData();
+    formData.append('video', file);
+    
+    try {
+      await axios.post('http://localhost:5000/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+    } catch (error) {
+      console.error('Error uploading video:', error);
+    }
   };
 
   const handleChoose = (event) => {
@@ -29,7 +38,7 @@ export default function VideoInput(props) {
           ref={inputRef}
           className="VideoInput_input"
           type="file"
-          onChange={handleFileChange}
+          onChange={handleUpload}
           accept=".mov,.mp4"
         />
       </div>
