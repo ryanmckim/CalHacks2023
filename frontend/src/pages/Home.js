@@ -1,5 +1,4 @@
 import NavBar from "../components/NavBar";
-import Footer from "../components/Footer";
 import Button from "../components/Button";
 import divider from "../imgs/divider.svg";
 import { NavLink } from "react-router-dom";
@@ -21,11 +20,10 @@ const Home = () => {
             inceptos himenaeos. Curabitur tempus urna at turpis condimentum
             lobortis.
           </p>
-            <NavLink className= "btn-primary" to="/demo">Demo</NavLink>
+            <NavLink className= "btn-primary" to="/demo">Get Started</NavLink>
         </div>
         <img alt="divider" className="divider" src={divider} />
       </main>
-      <Footer />
     </>
   );
 };

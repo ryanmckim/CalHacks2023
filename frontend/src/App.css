@@ -16,22 +16,22 @@ a {
 .gradientFont {
   font-size: 5em;
   font-weight: bold;
-  background: linear-gradient(to right, #ff23cf,  #FF6B00, #FFE500);
+  background: linear-gradient(to right, #ff23cf, #ff6b00, #ffe500);
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .btn-primary {
-    margin-top: 20px;
-    display: inline-block;
-    border: none;
-    padding: 1rem 5rem;
-    text-decoration: none;
-    background: #ff23cf;
-    text-align: center;
-    border-radius: 100px;
-    color: white;
-    font-weight: 600;
+  margin-top: 20px;
+  display: inline-block;
+  border: none;
+  padding: 1rem 5rem;
+  text-decoration: none;
+  background: #ff23cf;
+  text-align: center;
+  border-radius: 100px;
+  color: white;
+  font-weight: 600;
 }
 /* NAVBAR */
 
@@ -89,7 +89,6 @@ nav {
   /* z-index: 0; */
 }
 
-
 /* VIDEO UPLOAD */
 
 .videoUpload {
@@ -103,17 +102,120 @@ nav {
 .demoContent {
   display: flex;
   justify-content: center;
+  padding-top: 50px;
 }
 
-.videoUpload {
+.VideoInput {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 100px;
+  margin-top: 20px;
   border-radius: 20px;
   background-color: #1c1c1c;
   box-shadow: 0 0 20px #ff23cf, 0 0 30px #ff23cf;
   color: #ff23cf;
-  max-width: 60%;
+  width: 500px;
+  height: 200px;
+}
+
+.VideoInput input {
+  display: none;
+  margin: 20px;
+}
+
+.VideoInputted input {
+  display: none;
+}
+
+.VideoInputted label {
+  display: none;
+}
+
+.VideoInput label {
+  background: linear-gradient(to right, #ff23cf, #ff6b00, #ffe500);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.VideoInput h1 {
+  padding-bottom: 20px;
+}
+
+audio {
+  width: 100%;
+  padding-bottom:100px;
+}
+
+.VideoInput_footer {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+.center{
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.lds-ripple {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.lds-ripple p {
+  margin-top: 100px;
+  text-align: center;
+}
+.lds-ripple div {
+  position: absolute;
+  border: 4px solid #ff23cf;
+  opacity: 1;
+  border-radius: 50%;
+  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+@keyframes lds-ripple {
+  0% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  4.9% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  5% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: 0px;
+    left: 0px;
+    width: 72px;
+    height: 72px;
+    opacity: 0;
+  }
 }

@@ -7,7 +7,7 @@ export default function VideoInput(props) {
 
   const [source, setSource] = React.useState();
 
-  const audio = null;
+  const audio = true;
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -20,14 +20,19 @@ export default function VideoInput(props) {
   };
 
   return (
-    <div className="VideoInput">
-      <input
-        ref={inputRef}
-        className="VideoInput_input"
-        type="file"
-        onChange={handleFileChange}
-        accept=".mov,.mp4"
-      />
+    <div>
+      <div className={source ? "VideoInputted" : "VideoInput"}>
+        <label for="vidInput">Browse Files</label>
+
+        <input
+          id="vidInput"
+          ref={inputRef}
+          className="VideoInput_input"
+          type="file"
+          onChange={handleFileChange}
+          accept=".mov,.mp4"
+        />
+      </div>
       {/* {!source && <button onClick={handleChoose}>Choose</button>} */}
       {source && (
         <video
@@ -38,9 +43,25 @@ export default function VideoInput(props) {
           src={source}
         />
       )}
-      {audio && <audio className="VideoInput_video" controls src={audio} />}
       <div className="VideoInput_footer">
-        {audio ? <p>Audio has been generated!</p> : <p></p>}
+        {audio ? (
+          <div>
+            <p>Audio has been generated!</p>
+            <audio className="VideoInput_video" controls src={audio} />
+          </div>
+        ) : source ? (
+            <div className="center">
+          <div className="lds-ripple">
+            <div></div>
+            <div></div>
+            
+          </div>
+          <p>Generating audio file...</p>
+            </div>
+          
+        ) : (
+          <p>Upload a video to generate audio</p>
+        )}
       </div>
     </div>
   );
