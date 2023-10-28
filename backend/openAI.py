@@ -1,5 +1,8 @@
 from dotenv import load_dotenv
 import openai
+import os
+
+openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 def openai_prompt(prompt):
     conversation = [
