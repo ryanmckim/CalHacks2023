@@ -1,28 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import "./App.css";
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Demo from "./pages/Demo";
 
 export default function App() {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    axios.get("http://localhost:5000/members")
-    .then(response => {
-      setData(response.data)
-    })
-    .catch(error => {
-        console.log(error);
-    });
-  }, []);
 
   return (
-    <div>
-      {data.length === 0 ? (
-        <p>Loading...</p>
-      ) : (
-        data.map((member, i) => (
-          <p key={i}>{member}</p>
-        ))
-      )}
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/demo" element={<Demo />} />
+      <Route
+        path="*"
+        element={
+          <main className="page-not-found">
+            <p>Page not found</p>
+          </main>
+        }
+      />
+    </Routes>
   );
 }
