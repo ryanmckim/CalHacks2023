@@ -143,12 +143,15 @@ def main(input_path):
         print(music_description)
         generate_audio(music_description, path=f"backend/audio/{filename}.wav")
     elif input_path.endswith('.jpg'):
+        filename = input_path.split('/')[-1].split('.')[0]
+        # describe image
         raw_image = cv2.imread(input_path)
         raw_image = cv2.cvtColor(raw_image, cv2.COLOR_BGR2RGB)
         processor, model = BlipModelSingleton.get_instance()
         inputs = processor(raw_image, return_tensors="pt")
         out = model.generate(**inputs)
         description = (processor.decode(out[0], skip_special_tokens=True))
+        
         print(description)
         music_description = openai_prompt([description])
         print(music_description)
