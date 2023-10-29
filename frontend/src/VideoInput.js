@@ -8,13 +8,15 @@ export default function VideoInput(props) {
 
   const [source, setSource] = React.useState();
 
-  const audio = true;
+  const audio = null;
 
   const handleUpload = async (event) => {
     const file = event.target.files[0];
+    const url = URL.createObjectURL(file);
+    setSource(url);
     const formData = new FormData();
     formData.append('video', file);
-    
+
     try {
       await axios.post('http://localhost:5000/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
