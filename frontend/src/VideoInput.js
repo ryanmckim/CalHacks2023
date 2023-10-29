@@ -1,5 +1,5 @@
 import React from "react";
-import axios from 'axios';
+import axios from "axios";
 
 export default function VideoInput(props) {
   const { width, height } = props;
@@ -13,14 +13,14 @@ export default function VideoInput(props) {
   const handleUpload = async (event) => {
     const file = event.target.files[0];
     const formData = new FormData();
-    formData.append('video', file);
-    
+    formData.append("video", file);
+
     try {
-      await axios.post('http://localhost:5000/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      await axios.post("http://localhost:5000/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
     } catch (error) {
-      console.error('Error uploading video:', error);
+      console.error("Error uploading video:", error);
     }
   };
 
@@ -54,20 +54,18 @@ export default function VideoInput(props) {
       )}
       <div className="VideoInput_footer">
         {audio ? (
-          <div>
+          <div style={{ width: "100%" }}>
             <p>Audio has been generated!</p>
             <audio className="VideoInput_video" controls src={audio} />
           </div>
         ) : source ? (
-            <div className="center">
-          <div className="lds-ripple">
-            <div></div>
-            <div></div>
-            
-          </div>
-          <p>Generating audio file...</p>
+          <div className="center">
+            <div className="lds-ripple">
+              <div></div>
+              <div></div>
             </div>
-          
+            <p>Generating audio file...</p>
+          </div>
         ) : (
           <p>Upload a video to generate audio</p>
         )}

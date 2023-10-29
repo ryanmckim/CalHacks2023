@@ -70,7 +70,7 @@ nav {
 }
 
 .homeContent {
-  color: red;
+  height: 100vh;
 }
 
 .homeText {
@@ -79,13 +79,13 @@ nav {
   color: white;
   position: relative;
   margin-bottom: -80vh;
-  width: 50%;
+  width: 60%;
   /* z-index: 1; */
 }
 
 .divider {
   width: 100%;
-  margin: 500px 0;
+  margin-top: 500px;
   /* z-index: 0; */
 }
 
@@ -113,7 +113,6 @@ nav {
   padding: 100px;
   margin-top: 20px;
   border-radius: 20px;
-  background-color: #1c1c1c;
   box-shadow: 0 0 20px #ff23cf, 0 0 30px #ff23cf;
   color: #ff23cf;
   width: 500px;

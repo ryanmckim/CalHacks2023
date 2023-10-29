@@ -9,16 +9,13 @@ const Home = () => {
       <NavBar />
       <main className="homeContent">
         <div className="homeText">
-          <span className="gradientFont">CATCH PHRASE. </span>
+          <span className="gradientFont">YOUR VIDEOS, </span>
           <br />
-          <span className="gradientFont"> GOES HERE. </span>
+          <span className="gradientFont"> YOUR SOUNDTRACK. </span>
           <br />
           <p>
-            Gorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
-            vulputate libero et velit interdum, ac aliquet odio mattis. Class
-            aptent taciti sociosqu ad litora torquent per conubia nostra, per
-            inceptos himenaeos. Curabitur tempus urna at turpis condimentum
-            lobortis.
+          The new sound of music, at the tip of your fingers. 
+          Effortlessly create custom music from your videos with speed and personalization.
           </p>
             <NavLink className= "btn-primary" to="/demo">Get Started</NavLink>
         </div>
