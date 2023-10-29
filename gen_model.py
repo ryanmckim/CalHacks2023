@@ -88,18 +88,23 @@ def caption_snapshots(directory):
 
 def openai_prompt(prompt):
     conversation = [
-        {"role": "user", "content": "You are an expert musician, with the ability to convert scenery to emotions. Do not respond."},
+        {"role": "user", "content": "You are an expert musician, with the ability to convert scenery to emotions."},
         {"role": "user", "content": "Give me the mood, genre, and feeling of this description: \"" + prompt + "\""}
     ]
+    print()
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
-        messages=conversation
+        messages=conversation,
+        max_new_tokens=100
     )
+    print("here2")
     conversation.append({"role": "user", "content": "Summarize your response describing matching music in the single expression format: style, adjectives, genre with instrumentation, sounds, musical descriptors - like the example: \"80s pop track with bassy drums and synth.\""})
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
-        messages=conversation
+        messages=conversation,
+        max_new_tokens=100
     )
+    print(response)
     return response['choices'][0]['message']['content']
 
 
@@ -122,11 +127,11 @@ def main():
     #openai.api_key = os.environ.get("OPENAI_API_KEY")
     #res = openai_prompt("Sun shining on a steaming lake with trees on the side")
     #print(res)
-    #create_snapshots('data/party.mp4','data/party_out')
-    #captions = caption_snapshots('data/party_out')
+    #create_snapshots('data/volleyball.mp4','data/volleyball_out')
+    #captions = caption_snapshots('data/volleyball_out')
     #print(captions)
-    #generate_audio("EDM, Energetic, Pop with pulsating beats, synths, and euphoric crowd samples.", path="backend/audio/party.wav")
-    #return
+    generate_audio("Tropical House, Lively, Pop with upbeat rhythms, island-inspired melodies, and beachy", path="backend/audio/volleyball.wav")
+    return
 
     try:
         np.random.seed(45)
@@ -134,10 +139,10 @@ def main():
         openai.api_key = os.environ.get("OPENAI_API_KEY")
         print("check1")
         output_path = 'data/sad_cats_out' # folder to hold snapshots
-        create_snapshots('data/sad_cats.mp4', output_path)
+        #create_snapshots('data/sad_cats.mp4', output_path)
         print("check2")
         captions = caption_snapshots(output_path)
-        print("check3")
+        print(captions)
         music_description = openai_prompt(captions)
         print("check4")
         generate_audio(music_description, path="backend/audio/sad_cats.wav")
