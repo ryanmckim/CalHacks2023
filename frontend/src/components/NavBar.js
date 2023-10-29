@@ -11,7 +11,7 @@ const NavBar = () => {
             src={navbarLogo}
             width="50"
           />
-          <p>VidTune</p>
+          <p>TuneAI</p>
         </NavLink>
       </div>
     </nav>
