@@ -2,37 +2,48 @@ import React from "react";
 import axios from "axios";
 
 export default function VideoInput(props) {
+  const temp = new Map();
+  temp.set("nature.mp4", "nature.wav");
+  temp.set("party.mp4", "party.wav");
+  temp.set("volleyball.mp4", "volleyball.wav");
+
   const { width, height } = props;
-
   const inputRef = React.useRef();
-
-  const [source, setSource] = React.useState();
-
-  const audio = null;
+  const [video, setVideo] = React.useState();
+  const [audio, setAudio] = React.useState();
 
   const handleUpload = async (event) => {
     const file = event.target.files[0];
-    const url = URL.createObjectURL(file);
-    setSource(url);
+    const fileName = file.name;
+    const videoURL = URL.createObjectURL(file);
+    setVideo(videoURL);
     const formData = new FormData();
     formData.append('video', file);
 
-    try {
-      await axios.post("http://localhost:5000/upload", formData, {
+    await axios.post("http://localhost:5000/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    try {
+      await axios.post(`http://localhost:5000/upload/${fileName}`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
       });
     } catch (error) {
-      console.error("Error uploading video:", error);
+      console.log(error)
     }
-  };
 
-  const handleChoose = (event) => {
-    inputRef.current.click();
+    const response = await axios.get(`http://localhost:5000/get_audio/${fileName}`, {
+      responseType: 'blob'
+    });
+
+    const audioBlob = response.data;
+    const audioURL = URL.createObjectURL(audioBlob);
+    setAudio(audioURL);
   };
 
   return (
     <div>
-      <div className={source ? "VideoInputted" : "VideoInput"}>
+      <div className={video ? "VideoInputted" : "VideoInput"}>
         <label for="vidInput">Browse Files</label>
 
         <input
@@ -44,14 +55,13 @@ export default function VideoInput(props) {
           accept=".mov,.mp4"
         />
       </div>
-      {/* {!source && <button onClick={handleChoose}>Choose</button>} */}
-      {source && (
+      {video && (
         <video
           className="VideoInput_video"
           width="100%"
           height={height}
           controls
-          src={source}
+          src={video}
         />
       )}
       <div className="VideoInput_footer">
@@ -60,7 +70,7 @@ export default function VideoInput(props) {
             <p>Audio has been generated!</p>
             <audio className="VideoInput_video" controls src={audio} />
           </div>
-        ) : source ? (
+        ) : audio ? (
           <div className="center">
             <div className="lds-ripple">
               <div></div>

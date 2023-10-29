@@ -2,18 +2,21 @@ import os
 from flask import Flask, send_from_directory, request
 from flask_cors import cross_origin
 
-if not os.path.exists("./audio"):
-    os.makedirs("./audio")
-
-if not os.path.exists("./video"):
-    os.makedirs("./video")
-
 app = Flask(__name__)
+
+video_audio_mapping = {
+    "nature.mp4": "nature.wav",
+    "party.mp4": "party.wav",
+    "volleyball.mp4": "volleyball.wav"
+}
 
 @app.route("/get_audio/<filename>")
 @cross_origin()
 def get_audio(filename):
-    return send_from_directory("./audio/", filename)
+    print("hello")
+    print(video_audio_mapping.get(filename))
+    print("hello")
+    return send_from_directory("./audio/", video_audio_mapping.get(filename))
 
 @app.route("/upload", methods=['POST'])
 @cross_origin()
