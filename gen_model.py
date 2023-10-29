@@ -122,7 +122,7 @@ def generate_audio(descriptions, path="musicgen_out.wav"):
     scipy.io.wavfile.write(path, rate=sampling_rate, data=audio_values[0, 0].numpy())
 
 
-def main():
+def main(input_path):
     np.random.seed(45)
     load_dotenv()
     openai.api_key = os.environ.get("OPENAI_API_KEY")
