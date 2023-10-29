@@ -41,6 +41,25 @@ export default function VideoInput(props) {
     setAudio(audioURL);
   };
 
+  // Socket IO connection
+
+  // useEffect(() => {
+  //   const eventSource = new EventSource('http://localhost:5000/get_audio_stream');
+
+  //   eventSource.onmessage = (event) => {
+  //     setAudio(URL.createObjectURL(new Blob([event.data], { type: 'audio/mpeg' })));
+  //   };
+
+  //   eventSource.onerror = (error) => {
+  //     console.error('SSE error:', error);
+  //   };
+
+  //   return () => {
+  //     // Clean up
+  //     eventSource.close();
+  //   };
+  // }, []);
+
   return (
     <div>
       <div className={video ? "VideoInputted" : "VideoInput"}>

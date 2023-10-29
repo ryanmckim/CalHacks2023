@@ -10,12 +10,19 @@ video_audio_mapping = {
     "volleyball.mp4": "volleyball.wav"
 }
 
+# Socket IO connection
+
+# def generate_audio():
+#     audio_data = "data"
+#     yield f"data: {audio_data}\n\n"
+
+# @app.route('/get_audio_stream')
+# def get_audio_stream():
+#     return Response(generate_audio(), content_type="text/event-stream")
+
 @app.route("/get_audio/<filename>")
 @cross_origin()
 def get_audio(filename):
-    print("hello")
-    print(video_audio_mapping.get(filename))
-    print("hello")
     return send_from_directory("./audio/", video_audio_mapping.get(filename))
 
 @app.route("/upload", methods=['POST'])
