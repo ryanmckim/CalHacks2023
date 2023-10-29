@@ -158,6 +158,13 @@ audio {
   width: 100%;
   margin-top: 20px;
 }
+
+.VideoInput_img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 500px;
+}
 .center{
   text-align: center;
   display: flex;
