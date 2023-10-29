@@ -88,15 +88,16 @@ def caption_snapshots(directory):
 
 def openai_prompt(prompt):
     conversation = [
+        {"role": "user", "content": "You are an expert musician, with the ability to convert scenery to emotions. Do not respond."},
         {"role": "user", "content": "Give me the mood, genre, and feeling of this description: \"" + prompt + "\""}
     ]
     response = openai.ChatCompletion.create(
-        model="gpt-4",
+        model="gpt-3.5-turbo",
         messages=conversation
     )
-    conversation.append({"role": "user", "content": "Summarize your response in the format of the example: \"80s pop track with bassy drums and synth.\""})
+    conversation.append({"role": "user", "content": "Summarize your response describing matching music in the single expression format: style, adjectives, genre with instrumentation, sounds, musical descriptors - like the example: \"80s pop track with bassy drums and synth.\""})
     response = openai.ChatCompletion.create(
-        model="gpt-4",
+        model="gpt-3.5-turbo",
         messages=conversation
     )
     return response['choices'][0]['message']['content']
@@ -117,16 +118,29 @@ def generate_audio(descriptions, path="musicgen_out.wav"):
 
 
 def main():
+    #load_dotenv()
+    #openai.api_key = os.environ.get("OPENAI_API_KEY")
+    #res = openai_prompt("Sun shining on a steaming lake with trees on the side")
+    #print(res)
+    #create_snapshots('data/party.mp4','data/party_out')
+    #captions = caption_snapshots('data/party_out')
+    #print(captions)
+    #generate_audio("EDM, Energetic, Pop with pulsating beats, synths, and euphoric crowd samples.", path="backend/audio/party.wav")
+    #return
+
     try:
         np.random.seed(45)
         load_dotenv()
         openai.api_key = os.environ.get("OPENAI_API_KEY")
-
-        output_path = 'data/output_frames'
-        create_snapshots('data/nature.mp4', output_path)
+        print("check1")
+        output_path = 'data/sad_cats_out' # folder to hold snapshots
+        create_snapshots('data/sad_cats.mp4', output_path)
+        print("check2")
         captions = caption_snapshots(output_path)
+        print("check3")
         music_description = openai_prompt(captions)
-        generate_audio(music_description, path="musicgen_out.wav")
+        print("check4")
+        generate_audio(music_description, path="backend/audio/sad_cats.wav")
 
     except Exception as e:
         print(f"An error occurred: {e}")
