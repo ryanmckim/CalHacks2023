@@ -5,9 +5,9 @@ from flask_cors import cross_origin
 app = Flask(__name__)
 
 video_audio_mapping = {
-    "nature.mp4": "nature.wav",
+    "nature_img.jpg": "nature_img.wav",
     "party.mp4": "party.wav",
-    "volleyball.mp4": "volleyball.wav"
+    "xmas.mp4": "xmas.wav"
 }
 
 # Socket IO connection

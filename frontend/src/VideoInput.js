@@ -5,7 +5,8 @@ export default function VideoInput(props) {
   const temp = new Map();
   temp.set("nature.mp4", "nature.wav");
   temp.set("party.mp4", "party.wav");
-  temp.set("volleyball.mp4", "volleyball.wav");
+  temp.set("xmas.mp4", "xmas.wav");
+  temp.set("nature_img.jpg", "nature_img.wav");
 
   const { width, height } = props;
   const inputRef = React.useRef();
