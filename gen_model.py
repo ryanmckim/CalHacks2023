@@ -1,5 +1,6 @@
 import cv2
 import os
+import sys
 import numpy as np
 from PIL import Image
 from transformers import BlipProcessor, BlipForConditionalGeneration, AutoProcessor, MusicgenForConditionalGeneration
@@ -40,7 +41,7 @@ class MusicModelSingleton:
         return music_processor, music_model
 
 
-def create_snapshots(video_path, output_path='output_frames', interval_seconds=2):
+def create_snapshots(video_path, output_path='data/frames_out', interval_seconds=2):
     cap = cv2.VideoCapture(video_path)
     directory = output_path
     os.makedirs(directory, exist_ok=True)
@@ -121,11 +122,44 @@ def generate_audio(descriptions, path="musicgen_out.wav"):
     scipy.io.wavfile.write(path, rate=sampling_rate, data=audio_values[0, 0].numpy())
 
 
-def main():
+def main(input_path):
     np.random.seed(45)
     load_dotenv()
     openai.api_key = os.environ.get("OPENAI_API_KEY")
     print("loaded keys")
+    
+    if not os.path.exists(input_path):
+        print("Error: The specified input path does not exist.")
+        return
+
+    if input_path.endswith('.mp4'):
+        filename = input_path.split('/')[-1].split('.')[0]
+        output_path = f"data/{filename}_out"
+        create_snapshots(input_path, output_path)
+        print("Done snapshots.")
+        captions = caption_snapshots(output_path)
+        print(captions)
+        music_description = openai_prompt(captions)
+        print(music_description)
+        generate_audio(music_description, path=f"backend/audio/{filename}.wav")
+    elif input_path.endswith('.jpg'):
+        filename = input_path.split('/')[-1].split('.')[0]
+        # describe image
+        raw_image = cv2.imread(input_path)
+        raw_image = cv2.cvtColor(raw_image, cv2.COLOR_BGR2RGB)
+        processor, model = BlipModelSingleton.get_instance()
+        inputs = processor(raw_image, return_tensors="pt")
+        out = model.generate(**inputs)
+        description = (processor.decode(out[0], skip_special_tokens=True))
+        
+        print(description)
+        music_description = openai_prompt([description])
+        print(music_description)
+        generate_audio(music_description, path=f"backend/audio/{filename}.wav")
+        
+    else:
+        print("Error: The input file must be either an mp4 video or a jpg image.")
+        return
     #res = openai_prompt("Sun shining on a steaming lake with trees on the side")
     #print(res)
     #create_snapshots('data/volleyball.mp4','data/volleyball_out')
@@ -133,20 +167,11 @@ def main():
     #print(captions)
     #generate_audio("Tropical House, Lively, Pop with upbeat rhythms, island-inspired melodies, and beachy", path="backend/audio/volleyball.wav")
     #return
-
-    try:
-        output_path = 'data/xmas_out' # folder to hold snapshots
-        create_snapshots('data/xmas.mp4', output_path)
-        print("Done snapshots.")
-        captions = caption_snapshots(output_path)
-        print(captions)
-        music_description = openai_prompt(captions)
-        print(music_description)
-        generate_audio(music_description, path="backend/audio/xmas.wav")
-
-    except Exception as e:
-        print(f"An error occurred: {e}")
     
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) > 1:
+        input_path = sys.argv[1]
+        main(input_path)
+    else:
+        print("Please provide an input file path.")
