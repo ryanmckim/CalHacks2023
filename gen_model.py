@@ -86,23 +86,22 @@ def caption_snapshots(directory):
     return snapshots
 
 
+# prompt is a list of descriptions taken from snapshots in the video
 def openai_prompt(prompt):
+    prompt_str = '\", \"'.join(prompt) 
     conversation = [
         {"role": "user", "content": "You are an expert musician, with the ability to convert scenery to emotions."},
-        {"role": "user", "content": "Give me the mood, genre, and feeling of this description: \"" + prompt + "\""}
+        {"role": "user", "content": 'Give me the mood, genre, and feeling of this description: [\"' + prompt_str + '\"]'}
     ]
-    print()
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
-        messages=conversation,
-        max_new_tokens=100
+        messages=conversation
     )
-    print("here2")
+    print("asking gpt to create a music description...")
     conversation.append({"role": "user", "content": "Summarize your response describing matching music in the single expression format: style, adjectives, genre with instrumentation, sounds, musical descriptors - like the example: \"80s pop track with bassy drums and synth.\""})
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
-        messages=conversation,
-        max_new_tokens=100
+        messages=conversation
     )
     print(response)
     return response['choices'][0]['message']['content']
@@ -123,29 +122,27 @@ def generate_audio(descriptions, path="musicgen_out.wav"):
 
 
 def main():
-    #load_dotenv()
-    #openai.api_key = os.environ.get("OPENAI_API_KEY")
+    np.random.seed(45)
+    load_dotenv()
+    openai.api_key = os.environ.get("OPENAI_API_KEY")
+    print("loaded keys")
     #res = openai_prompt("Sun shining on a steaming lake with trees on the side")
     #print(res)
     #create_snapshots('data/volleyball.mp4','data/volleyball_out')
     #captions = caption_snapshots('data/volleyball_out')
     #print(captions)
-    generate_audio("Tropical House, Lively, Pop with upbeat rhythms, island-inspired melodies, and beachy", path="backend/audio/volleyball.wav")
-    return
+    #generate_audio("Tropical House, Lively, Pop with upbeat rhythms, island-inspired melodies, and beachy", path="backend/audio/volleyball.wav")
+    #return
 
     try:
-        np.random.seed(45)
-        load_dotenv()
-        openai.api_key = os.environ.get("OPENAI_API_KEY")
-        print("check1")
-        output_path = 'data/sad_cats_out' # folder to hold snapshots
-        #create_snapshots('data/sad_cats.mp4', output_path)
-        print("check2")
+        output_path = 'data/xmas_out' # folder to hold snapshots
+        create_snapshots('data/xmas.mp4', output_path)
+        print("Done snapshots.")
         captions = caption_snapshots(output_path)
         print(captions)
         music_description = openai_prompt(captions)
-        print("check4")
-        generate_audio(music_description, path="backend/audio/sad_cats.wav")
+        print(music_description)
+        generate_audio(music_description, path="backend/audio/xmas.wav")
 
     except Exception as e:
         print(f"An error occurred: {e}")
