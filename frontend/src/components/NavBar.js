@@ -14,9 +14,6 @@ const NavBar = () => {
           <p>VidTune</p>
         </NavLink>
       </div>
-      <div className="navbar-links">
-        <NavLink to="/demo">Demo</NavLink>
-      </div>
     </nav>
   );
 };
