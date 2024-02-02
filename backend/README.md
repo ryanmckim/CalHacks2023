@@ -1,19 +1,19 @@
 # To run the VE:
 
-cd into the backend
+`cd backend`
 
 ## Mac:
 
-source venv/bin/activate
+`source venv/bin/activate`
 
 ## Windows:
 
-venv\Scripts\activate
+`venv\Scripts\activate`
 
 # Installing dependencies
 
-pip install -r requirements.txt
+`pip install -r requirements.txt`
 
 # To run the server
 
-python server.py
+`python server.py`
