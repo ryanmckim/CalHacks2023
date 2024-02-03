@@ -10,46 +10,50 @@ export default function VideoInput(props) {
 
   const { width, height } = props;
   const inputRef = React.useRef();
-  var [video, setVideo] = React.useState();
+  const [video, setVideo] = React.useState();
   const [image, setImage] = React.useState();
   const [audio, setAudio] = React.useState();
 
+  const handleAudioOutput = async (fileName) => {
+    try {
+      const audioResponse = await axios.get(`http://localhost:5000/get_audio/${fileName}`, {
+        responseType: "blob",
+      });
+      const audioBlob = audioResponse.data;
+      const audioURL = URL.createObjectURL(audioBlob);
+      setAudio(audioURL);
+    } catch (error) {
+      console.log("Error retrieving audio:", error);
+    }
+  };
+
   const handleUpload = async (event) => {
-    const file = event.target.files[0];
-    const fileName = file.name;
+    const file = event.target.files[0];  
+    // const fileName = file.name;
     const fileType = file.type;
-    const videoURL = URL.createObjectURL(file);
-    if (fileType == "video/mp4") {
-      setVideo(videoURL);
-    } else {
-      setImage(videoURL);
-      video = true;
+    const fileURL = URL.createObjectURL(file);
+    if (fileType.startsWith("video")) {
+      setVideo(fileURL);
+    } else if (fileType.startsWith("image")) {
+      setImage(fileURL);
     }
     const formData = new FormData();
-    formData.append("video", file);
-
-    await axios.post("http://localhost:5000/upload", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    formData.append("file", file);
+    console.log("FormDataFile:", formData.get('file'));
 
     try {
-      await axios.post(`http://localhost:5000/upload/${fileName}`, formData, {
+      const response = await axios.post("http://localhost:5000/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-    } catch (error) {
-      console.log(error);
-    }
 
-    const response = await axios.get(
-      `http://localhost:5000/get_audio/${fileName}`,
-      {
-        responseType: "blob",
+      // If the file uploaded successfully, retrieve audio
+      if (response.status === 200) {
+        const audioFileName = response.data.audio_file
+        await handleAudioOutput(audioFileName);
       }
-    );
-
-    const audioBlob = response.data;
-    const audioURL = URL.createObjectURL(audioBlob);
-    setAudio(audioURL);
+    } catch (error) {
+      console.log("Error uploading file:", error);
+    }
   };
 
   // Socket IO connection
@@ -74,7 +78,7 @@ export default function VideoInput(props) {
   return (
     <div>
       <div className={(video || image) ? "VideoInputted" : "VideoInput"}>
-        <label for="vidInput">Browse Files</label>
+        <label htmlFor="vidInput">Browse Files</label>
 
         <input
           id="vidInput"
@@ -82,7 +86,7 @@ export default function VideoInput(props) {
           className="VideoInput_input"
           type="file"
           onChange={handleUpload}
-          accept=".mov,.mp4, .jpg, .jpeg, .png"
+          accept=".mov, .mp4, .jpg, .jpeg, .png"
         />
       </div>
       {image && (
