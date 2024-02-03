@@ -1,0 +1,14 @@
+version: '0.0.1'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    image: tuneai-app-api
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    image: tuneai-app-client 
+    ports:
+      - "3000:80"
